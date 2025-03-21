@@ -1,3 +1,7 @@
+SHOW DATABASES;
+USE DEMO;
+SHOW TABLES;
+
 -- CREATE TABLE suppliers(
 --     supplier_id INT
 --    , supplier_name VARCHAR(20)

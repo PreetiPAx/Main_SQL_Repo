@@ -7,6 +7,8 @@ CREATE TABLE suppliers(
    , total_spent INT
 );
 
+SHOW DATABASES;
+
 -- TEST TABLE:
 SELECT * FROM SUPPLIERS ;
 
