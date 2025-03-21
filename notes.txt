@@ -1,0 +1,51 @@
+Create, read(retrieve), update, delete(C.R.U.D)
+
+NRDBMS--mongoDB, apache cassandra, firebase etc
+
+queries are requests made to the database management system for specific information
+
+primary key -- basically an attribute which uniquely defines the row in the DB
+surrogate key-- basically a key that has no mapping to anything in the real world
+
+natural key--is a key that has a mapping or has a purpose in the real world, not just in the DB
+
+Foreign key--link us to another DB table (a way that we can define relationship B/W the two or more tables
+
+Composite key-- basically a key that needs two attributes Because they both don't have uniquely identify each row
+(only together they can uniquely identify it)
+we define two columns as the primary key, which would be a composite key
+
+SQL-- is actually a hybrid language, it's basically 4 types of languages in one
+Data query language(DQL)
+Data Definition language (DDL)
+Data Control language(DCL)
+Data manipulation language(DML)
+
+QUERIES----------
+a query is a set of instructions given to the RDBMS that tell the RDBMS what information you want it to retrieve for you
+1-Tons of data in a DB
+2- Often hidden in a complex schema
+3- Goal is to only get the data you need
+
+
+
+
+INT-- Whole no.
+DECIMAL(M,N)--Decimal no. -Exact value
+VARCHAR(1)--String of text of length 1
+BLOB--Binary large object , stores large data
+DATE-- 'YYYY-MM-DD'
+TIMESTAMP--'YYYY-MM-DD HH:MM:SS' used for recording
+
+--------CREATING TABLES-------
+
+CREATE TABLE student
+
+for show-----
+DESCRIBE student;
+
+
+
+
+
+

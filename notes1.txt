@@ -1,0 +1,807 @@
+touch---make new emplty file
+
+mv --for moving
+
+cp--for copy
+
+~ ----home
+
+whoami
+
+move bhalu to muski----mv bhalu ~/muski-----now bhalu file lies in muski
+
+wants bhalu file again its location -----press cd ----then----mv ~/muski/bhalu .
+
+for remove directory---- rm -r directory name
+
+copy or move 1 file to another place ----cp/mv ~/projects/bhalu/9.xt ~/projects/muski/
+
+ls -R ------files with their sub files
+
+force Delete (if needed): If the directory is protected or requires elevated permissions:  sudo rm -rf sis
+
+&& we do many task together
+
+user in linux--
+regular user & root user or super user(full access) & service user
+
+sudo apt install file name
+
+sudo apt update
+sudo apt upgrade----for install
+for making empty file---touch 1.txt
+for making hidden files---touch .txt
+for show hidden files----- ls -a
+ls -lart------Running ls -lart will give you a detailed list of files and directories, including hidden ones, sorted by modification time, with the most recent files at the bottom of the list.
+
+>get out from this-----> " enter
+
+Press Ctrl+C: This cancels any command currently running or waiting for input, bringing you back to the terminal prompt.
+
+want to write some notes ------echo "write whatever you want">file name
+want to add another line on it ------echo"your note">>file name
+u also use cat command to write your notes----cat>my-dog----write notes then save file press "ctrl + D"
+
+Delete the Non-Empty Directory Use the rm command with the -r (recursive) option to remove the directory and its contents:
+sudo rm -r projects
+
+remove the file in the directory---rm directory name/file name
+
+
+printf
+===================l-18---file and directory permission explained=======================
+id -Gn----Displays group names only, compared to id which shows both numeric IDs and names.
+
+cat /etc/passwd---to list all user
+
+groups pat--display the groups that a specific user (in this case, pat) belongs to.
+
+chmod u+-rwx file name && g+-rwx file name f.n. && o=-rwx f.n.
+or  chmod u+-rwx,g+-rwx,o+-rwx f.n.
+
+sudo chmod ugoa=r shared=====only read permission allowed to user, group and all
+'or'  chmod a=r f.n.
+
+chmod u=rwx,g=rx,o= f.n.------after = not write any vaues means rwx permission deleted for that
+
+==============l-19-----part 2--===================================================================
+change group name--
+chgrp (name you want change in this) group file
+ex:-preece@Preeces-MacBook-Air /Users % ls -l shared
+    total 0
+    drwxrwxrwx@ 2 preece  wheel  64 Feb  9  2024 SC Info
+
+    here owner is preece and group name is wheel and the group file is shared
+
+sudo chgrp -R staff shared--------chgrp -R-----To change the group of the shared directory and all its contents (including SC Info):
+ls -ld -----you got changed group name----drwxrwxrwx  4 root  staff  128 Feb  9  2024 shared
+
+If you're not the owner, change ownership (requires sudo):----sudo chown preece shared
+
+
+
+rm: users: is a directory occurs because rm is designed to remove files, not directories. To remove a directory and its contents, you need to use the rm -r (recursive) option. Additionally, if you want to force removal without being prompted for confirmation, you can use -f.
+To remove the users directory and all of its contents,
+use:--sudo rm -rf users
+
+[if u want to execute a file as script
+we write the Content of dog: Add valid shell commands to the file:
+echo '#!/bin/bash' > my-dog/dog
+echo 'echo "this is my black dog"' >> my-dog/dog
+
+Make It Executable:--chmod +x my-dog/dog
+Run the File:--./my-dog/dog
+Output:--this is my black dog]
+
+-------------file creation mask determines default permissions---------
+if no mask were used permissions would be: 777 for directories and 666 for files
+
+preece@Preeces-MacBook-Air dog_test % ls -ld my-dog
+drwxr-xr-x  3 preece  staff  96 Jan 10 12:05 my-dog
+
+preece@Preeces-MacBook-Air dog_test % ls -l my-dog
+total 8
+-rwxr-xr-x  1 preece  staff  13 Jan 10 12:06 dog
+
+preece@Preeces-MacBook-Air dog_test % my-dog/dog
+this is my black dog
+
+preece@Preeces-MacBook-Air dog_test % chmod 400 my-dog
+preece@Preeces-MacBook-Air dog_test % ls -ld my-dog
+dr--------  3 preece  staff  96 Jan 10 12:05 my-dog
+
+not able to open my file-----
+
+preece@Preeces-MacBook-Air dog_test % ls -l my-dog
+total 0
+ls: fts_read: Permission denied
+preece@Preeces-MacBook-Air dog_test % my-dog/dog
+zsh: permission denied: my-dog/dog
+
+preece@Preeces-MacBook-Air dog_test % chmod 500 my-dog
+preece@Preeces-MacBook-Air dog_test % ls -ld my-dog
+dr-x------  3 preece  staff  96 Jan 10 12:05 my-dog
+preece@Preeces-MacBook-Air dog_test % ls -l my-dog
+total 8
+-rwxr-xr-x  1 preece  staff  40 Jan 10 12:15 dog
+preece@Preeces-MacBook-Air dog_test % my-dog/dog
+this is my black dog
+
+
+umask------002, 022, 007, 077
+umask	File Permissions	Directory Permissions	Use Case
+000	     666	777	        No restrictions (not recommended).
+022	     644	755	        Default: Restrict write access to others.
+027      640	750	        More secure: No access for others.
+077	     600	700	        Highly secure: No access for group and others.
+
+preece@Preeces-MacBook-Air ~ % mkdir testumask
+preece@Preeces-MacBook-Air ~ % cd testumask
+preece@Preeces-MacBook-Air testumask % umask
+022
+preece@Preeces-MacBook-Air testumask % umask -S
+u=rwx,g=rx,o=rx
+
+preece@Preeces-MacBook-Air testumask % mkdir a-dir
+preece@Preeces-MacBook-Air testumask % touch a-file
+preece@Preeces-MacBook-Air testumask % ls -l
+total 0
+drwxr-xr-x  2 preece  staff  64 Jan 10 12:48 a-dir
+-rw-r--r--  1 preece  staff   0 Jan 10 12:49 a-file
+
+preece@Preeces-MacBook-Air testumask % umask 007
+preece@Preeces-MacBook-Air testumask % umask
+007
+preece@Preeces-MacBook-Air testumask % umask -S
+u=rwx,g=rwx,o=
+preece@Preeces-MacBook-Air testumask % mkdir a-dir
+preece@Preeces-MacBook-Air testumask % touch a-file
+preece@Preeces-MacBook-Air testumask % ls -l
+total 0
+drwxrwx---  2 preece  staff  64 Jan 10 12:52 a-dir
+-rw-rw----  1 preece  staff   0 Jan 10 12:52 a-file
+
+
+=======================================l--20--=========================================================
+
+**********find files and directories***********
+
+find . -----find all the current directory
+
+Find Files with a Specific Name---[find . -name "example.txt"]  (-name means for it case is important) but we use (-iname---it ignnore case)
+
+find files which start with any alphabets use "a*" if last with any alphabets then use "*a"-----[find . -name "*a or a*"]
+
+ex---preece@Preeces-MacBook-Air ~ % find /usr/bin -name "*v"
+     /usr/bin/gcov
+     /usr/bin/iconv
+
+find /usr -mtime +10 -mtime -90-------files modified between 10 and 90 days ago.
+
+find /usr -name "s*" -ls------displays detailed information about them.
+
+ex--preece@Preeces-MacBook-Air ~ % find /usr -name "s*" -ls
+    1152921500312782682       40 -rwxr-xr-x    1 root             wheel              153024 Jan 11  2024 /usr/bin/snmptranslate
+
+find /usr -size +1M---files that are larger than 1 megabyte (MB).----for bytes use (c)
+
+Find Files with a Specific Extension----[find . -name "*.txt"]
+
+Find Only Directories---Search for directories named my-folder:----[find . -type d -name "my-folder"]
+
+ex--find /usr -type d -newer /etc/passwd-----searches for directories in the /usr directory that have been modified more recently than the /etc/passwd file.
+
+Use the 2>/dev/null option to suppress error messages about denied permissions:
+
+ls -l /etc/passwd-----displays detailed information about the /etc/passwd file in a long format.
+
+find . -exec file {} \;   ------is used to search for files and directories in the current directory (.) and its subdirectories, and then for each file or directory found, it runs the file command to determine the file type.
+
+ex--preece@Preeces-MacBook-Air dog_test % find . -exec {} \;
+.: directory
+./dog: ASCII text
+./my-dog: directory
+./my-dog/dog: Bourne-Again shell script text executable, ASCII text
+./NetrwTreeListing: ASCII text
+
+locate uptime----????
+
+=======================================l--21--=========================================================
+-----------------------head-----------------
+
+head file name ----shows the first 10lines of a file or input.
+
+Specify the Number of Lines to Display Use the -n option to display a specific number of lines:
+head -n  filename
+
+If multiple files are specified, head will show the first few lines of each file, separated by headers indicating the file name:
+head file 1 file 2
+
+preece@Preeces-MacBook-Air dog_test % head dog cat
+==> dog <==
+this is my dog.
+bow bow
+i love my dog
+he is very loyal
+
+==> cat <==
+this is my white cat
+my dogie and catie is besties
+they play together
+and spent their times together
+--------------------tail----------------
+it shows the last 10 lines of a file or input.
+
+Specify the Number of Lines to Display
+tail -n  filename
+--------------------more-----------------
+This displays the file content one screen at a time. Use the spacebar to move to the next page.
+
+Difference Between more and less
+
+    more only allows forward navigation through the file.
+    less supports both forward and backward navigation and offers more features like editing.
+
+Key/Command      	Description
+Spacebar        	Move forward one screen/page.
+Enter	            Move forward one line.
+/pattern	        Search forward for a word or pattern.
+n	                Find the next occurrence of the pattern.
+q	                Quit the more command.
+=	                Display the current line number.
+
+The tail -f filename ----command is used to continuously monitor the last few lines of a file as the file gets updated. It is commonly used to watch log files in real time or monitor files that are being
+
+--------------nano editor--------------------
+nano is a simple editor
+not as advanced as vi or emacs
+
+Shortcut	Action
+Ctrl + O	Save (Write Out) changes to the file.
+Ctrl + X	Exit the editor.
+Ctrl + K	Cut a line of text.
+Ctrl + U	Paste the cut text.
+Ctrl + W	Search within the file.
+Ctrl + G	Display help menu.
+Ctrl + J	Justify the current paragraph.
+Ctrl + C	Show the current line and column.
+
+=======================================l--22--=========================================================
+-------------------vi editor----------------
+Press i and type your text.
+Save Changes and Quit:
+
+    Press Esc to enter Command Mode.
+    Type :wq and press Enter.
+
+Quit Without Saving:
+
+    Press Esc to enter Command Mode.
+    Type :q! and press Enter.
+
+    gg---Go to the beginning of the file.
+    G---Go to the end of the file.
+
+ -----Editing------
+    Command	Action
+    x	Delete the character under the cursor.
+    dd	Delete the current line.
+    yy	Copy (yank) the current line.
+    p	Paste the copied line.
+    u	Undo the last action.
+    Ctrl + r	Redo the undone action.
+    gg	 Go to the beginning of the file.
+     G	 Go to the end of the file.
+
+     :n--position the cursor at line n.
+     :$--position the cursor on the last line.
+     :set nu---turn on line numbering.
+     :set nonu--turn off line numbering
+
+
+
+=======================================l--23--=========================================================
+
+=======================================l--24--=========================================================
+
+
+=======================================l--25--=========================================================
+----removing files--------
+rm file--remove file
+
+rm -r--remove the directory and its contents recursively
+rm -f file--force removal and never prompt for confirmation.
+
+----copying files---------
+cp--source_file destination_file
+cp--source_file destination_file
+
+touch file1
+touch file2
+preece@Preeces-MacBook-Air dog_test % cp file1 file2
+preece@Preeces-MacBook-Air dog_test % mkdir dir
+preece@Preeces-MacBook-Air dog_test % cp file1 file2 dir
+preece@Preeces-MacBook-Air dog_test % ls dir
+file1   file2
+preece@Preeces-MacBook-Air dog_test % cp -r dir dir2
+preece@Preeces-MacBook-Air dog_test % ls dir2
+file1   file2
+preece@Preeces-MacBook-Air dog_test % mkdir dir3
+preece@Preeces-MacBook-Air dog_test % cp -r dir dir2 dir3
+preece@Preeces-MacBook-Air dog_test % ls dir3
+dir     dir2
+preece@Preeces-MacBook-Air dog_test % tree dir3
+dir3
+├── dir
+│├── file1
+│└── file2
+└── dir2
+    ├── file1
+    └── file2
+
+----moving and renaming files-----------
+mv --move or rename files and directories
+
+preece@Preeces-MacBook-Air dog_test % ls
+NetrwTreeListing        dir2                    file2                   sample.txt
+bigfile.txt             dir3                    file2dir
+cat                     dog                     my-dog
+dir                     file1                   s.text
+preece@Preeces-MacBook-Air dog_test % mv dir firstdir
+preece@Preeces-MacBook-Air dog_test % ls
+NetrwTreeListing        dir3                    file2dir                sample.txt
+bigfile.txt             dog                     firstdir
+cat                     file1                   my-dog
+dir2                    file2                   s.text
+preece@Preeces-MacBook-Air dog_test % mv file1 file1.renamed
+preece@Preeces-MacBook-Air dog_test % ls
+NetrwTreeListing        dir3                    file2dir                sample.txt
+bigfile.txt             dog                     firstdir
+cat                     file1.renamed           my-dog
+dir2                    file2                   s.text
+preece@Preeces-MacBook-Air dog_test % mv file1.renamed firstdir
+preece@Preeces-MacBook-Air dog_test % ls
+NetrwTreeListing        dir2                    file2                   my-dog
+bigfile.txt             dir3                    file2dir                s.text
+cat                     dog                     firstdir                sample.txt
+preece@Preeces-MacBook-Air dog_test % cd firstdir
+preece@Preeces-MacBook-Air firstdir % ls
+file1           file1.renamed   file2
+preece@Preeces-MacBook-Air firstdir % cat file1
+preece@Preeces-MacBook-Air firstdir % cat>file1
+this text started out in file1
+^C
+preece@Preeces-MacBook-Air firstdir % cat file1
+this text started out in file1
+preece@Preeces-MacBook-Air firstdir % cat>file2
+this text started out in file1
+file1 not file2
+^C
+preece@Preeces-MacBook-Air firstdir % cat file2
+this text started out in file1
+file1 not file2
+preece@Preeces-MacBook-Air firstdir % mv file1 file2
+preece@Preeces-MacBook-Air firstdir % ls
+file1.renamed   file2
+
+
+
+=======================================l--26--=========================================================
+
+=======================================l--27--=========================================================
+ wc -l-------wc stands for word count, and the -l option specifically counts lines
+
+top---how much resources  are used by running process
+ps---process currently working
+ps -a --- show all process with background
+if u want more detailed information about each process-----ps -af
+
+which bash---find its location-----RT--/usr/bin/bash
+
+for read ---using cat & more ---use '' for string ""------cat starting of file* like cat h*---cat ./-filename
+for i in $(ls); do file ./$i;done
+
+
+
+find . -readable -size 1033c -not -executable
+
+cat data.txt | grep "millionth"
+
+for uniqueness---uniq---for unique count---uniq -c
+uniq -u------print only the unique lines
+if u want to remove some values-----grep -v (p''ut value)
+wants only human readable strings----strings
+
+roted by 13th position---rot13
+
+xxd -r ----command in Linux is used to reverse a hexdump back into its original binary form.
+
+for encoded data like base64---base64-d
+
+tar -xvf file name
+
+gzip -d file name or gunzip file name
+
+netcat--nc--arbitrary tcp and udp connections and listens--nc localhost 30000
+
+
+
+
+===========================4==============================================
+for i in $(ls); do file ./$i;done
+cat ./-file07
+
+pw--4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+
+===============================5===========================
+find . -readable -size 1033c -not -executable
+
+cat ./maybehere07/.file2
+
+pw--HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+==================================6=======================================
+
+find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
+
+cat /var/lib/dpkg/info/bandit7.password
+
+
+pw--morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+======================7========================================
+
+cat data.txt | grep millionth
+ pw--dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+ ===============================8=======================================
+ cat data.txt | sort | uniq -u
+
+ pw--44CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+
+ =========================9======================================
+ cat data.txt | strings | grep =
+
+ pw--FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+=============================10=======================================
+ cat data.txt | base64 -d
+pw--dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+
+================================11=======================================
+cat data.txt
+pw--7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4           rot13.com
+
+=============================12========================================
+temp_dir=$(mktemp -d)
+cd $temp_dir
+cd
+cp data.txt $temp_dir
+cd $temp_dir
+ls
+cat data.txt | xxd -r >hexdump
+file hexdump
+mv hexdump hexdump.gz
+gunzip hexdump.gz
+mv hexdump hexdump.bz2
+bunzip2 hexdump.bz2
+tar -xvf file name
+cat data8.bin
+pw-- FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+=================================13=================================
+ssh -i sshkey.private bandit14@localhost -p2220
+cat /etc/bandit_pass/bandit14
+
+pw--MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+=================================14===================================
+nc localhost 30000
+pw--8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+=======================================15======================================
+openssl s_client -connect localhost:30001
+put old pw
+pw--kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+======================================16=============================================
+nmap localhost -p 31000-32000
+nmap localhost -p 31046,31518,31691,31790,31960 -sV -T4
+ncat --ssl localhost 31790
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
+
+temp_dir=$(mktemp -d)
+cd $temp_dir
+vi key---paste it-----:wq
+chmod 400 key
+ ssh -i key bandit17@localhost -p2220
+ =======================================17=======================================
+diff passwords.old passwords.new
+pw--x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+======================================18========================
+ssh -t bandit18@bandit.labs.overthewire.org -p2220 /bin/sh
+ls
+cat readme
+pw---cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+======================================19===================================
+ls
+bandit20-do
+./bandit20-do id
+./bandit20-do ls
+./bandit20-do cat /etc/bandit_pass/bandit20
+pw--0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+
+====================================20=========================================
+ls
+suconnect
+./suconnect
+cat /etc/bandit_pass/bandit20
+cat /etc/bandit_pass/bandit20 | nc -l 1234
+in another terminal ---./suconnect 1234
+pw--EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+==================================21====================================================
+ vim /etc/cron.d/
+quit without saving--:q!
+ls /etc/cron.d/
+cat /etc/cron.d/cronjob_bandit22
+cat /usr/bin/cronjob_bandit22.sh
+cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+pw--tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+========================================22====================================================
+ls /etc/cron.d/
+cat /etc/cron.d/cronjob_bandit23
+cat /usr/bin/cronjob_bandit23.sh
+myname=bandit23
+mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
+echo $mytarget
+8ca319486bfbbc3663ea0fbe81326349
+cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+pw--0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+=====================================23==============================================
+ls /etc/cron.d/
+cat /etc/cron.d/cronjob_bandit24
+cat /usr/bin/cronjob_bandit24.sh
+vim test.sh
+:q!
+cd /tmp/     |   "or"   temp_dir=$(mktemp -d)
+             |
+mkdir poool  |      cd $temp_dir
+cd poool
+vim test.sh---#!/bin/bash-----enter then type----cat /etc/bandit_pass/bandit24 > /tmp/poool/pass-------:wq
+cat test.sh
+touch pass
+chmod 777 pass
+chmod 777 test.sh
+ls
+cp test.sh /var/spool/bandit24/foo/
+cat pass-------repeat many time after a minute u got password
+pw--gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+
+=========================================24===================================================
+
+nc localhost 30002----(bt have no pincode so)
+for i in {0000..9999}; do echo $i; echo gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 $i; done | nc localhost 30002
+pw--iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+=============================================25=====================================================
+ls----bandit26.sshkey
+minimize the screen
+ssh -i bandit26.sshkey bandit26@localhost -p2220--------------(-i option specifies the identity file (private key) to use for authentication
+press v
+!ls
+:set shell?
+:set shell=/bin/bash
+:set shell?---for check the shell that changed or not
+:shell
+bandit26@bandit:~$ ls
+bandit27-do  text.txt
+bandit26@bandit:~$ cat /etc/bandit_pass/bandit26
+pw:--s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+proceed for bandit 27
+===========================================26======================================================
+./bandit27-do cat /etc/bandit_pass/bandit27
+pw--upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+===========================================27=====================================================
+bandit27@bandit:~$ cat /etc/bandit_pass/bandit27
+upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+temp_dir=$(mktemp -d)
+cd $temp_dir
+
+git clone ssh://bandit27-git@localhost/home/bandit27-git/repo
+
+GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -p 2220" git clone ssh://bandit27-git@localhost/home/bandit27-git/repo
+ls -la
+ls -la repo
+cd repo
+cat README
+pw--Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+
+
+==========================================28=====================================================
+temp_dir=$(mktemp -d)
+ cd $temp_dir
+ git clone ssh://bandit28-git@localhost/home/bandit28-git/repo
+ GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -p 2220" git clone ssh://bandit28-git@localhost/home/bandit28-git/repo
+ls -la
+cd repo
+ls -la repo
+bandit28@bandit:/tmp/tmp.aTYlPG3SPk/repo$ cat  README.md
+# Bandit Notes
+Some notes for level29 of bandit.
+
+## credentials
+
+- username: bandit29
+- password: xxxxxxxxxx
+
+bandit28@bandit:/tmp/tmp.aTYlPG3SPk/repo$ git log
+commit 817e303aa6c2b207ea043c7bba1bb7575dc4ea73 (HEAD -> master, origin/master, origin/HEAD)
+Author: Morla Porla <morla@overthewire.org>
+Date:   Thu Sep 19 07:08:39 2024 +0000
+
+    fix info leak
+
+commit 3621de89d8eac9d3b64302bfb2dc67e9a566decd
+Author: Morla Porla <morla@overthewire.org>
+Date:   Thu Sep 19 07:08:39 2024 +0000
+
+    add missing data
+
+commit 0622b73250502618babac3d174724bb303c32182
+Author: Ben Dover <noone@overthewire.org>
+Date:   Thu Sep 19 07:08:39 2024 +0000
+
+    initial commit of README.md
+
+git show 817e303aa6c2b207ea043c7bba1bb7575dc4ea73
+
+
+pw--4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+
+=========================================29======================================================
+temp_dir=$(mktemp -d)
+ cd $temp_dir
+ git clone ssh://bandit29-git@localhost/home/bandit29-git/repo
+ GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -p 2220" git clone ssh://bandit29-git@localhost/home/bandit29-git/repo
+ls -la
+cd repo
+ls
+-----
+bandit29@bandit:/tmp/tmp.A9k2SMm3yc/repo$ cat README.md
+# Bandit Notes
+Some notes for bandit30 of bandit.
+
+## credentials
+
+- username: bandit30
+- password: <no passwords in production!>
+-----
+bandit29@bandit:/tmp/tmp.A9k2SMm3yc/repo$ git log
+commit 6ac7796430c0f39290a0e29a4d32e5126544b022 (HEAD -> master, origin/master, origin/HEAD)
+Author: Ben Dover <noone@overthewire.org>
+Date:   Thu Sep 19 07:08:41 2024 +0000
+
+    fix username
+
+commit e65a928cca4db1863b478cf5e93d1d5b1c1bd6b2
+Author: Ben Dover <noone@overthewire.org>
+Date:   Thu Sep 19 07:08:41 2024 +0000
+
+    initial commit of README.md
+---
+
+git grep 'password' $(git rev-list --all)
+pw--qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+
+==========================================30=======================================
+temp_dir=$(mktemp -d)
+ cd $temp_dir
+ git clone ssh://bandit30-git@localhost/home/bandit30-git/repo
+ GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -p 2220" git clone ssh://bandit30-git@localhost/home/bandit30-git/repo
+ls -la
+cd repo
+ls
+--
+bandit30@bandit:/tmp/tmp.tzskp5Jc3K/repo$ cat README.md
+just an epmty file... muahaha
+
+bandit30@bandit:/tmp/tmp.tzskp5Jc3K/repo$ git branch
+* master
+bandit30@bandit:/tmp/tmp.tzskp5Jc3K/repo$ git branch -r
+  origin/HEAD -> origin/master
+  origin/master
+bandit30@bandit:/tmp/tmp.tzskp5Jc3K/repo$ git tag
+secret
+bandit30@bandit:/tmp/tmp.tzskp5Jc3K/repo$ git show secret
+fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+
+==========================================31=======================================
+temp_dir=$(mktemp -d)
+ cd $temp_dir
+ git clone ssh://bandit31-git@localhost/home/bandit31-git/repo
+ GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -p 2220" git clone ssh://bandit31-git@localhost/home/bandit31-git/repo
+ls -la
+cd repo
+ls
+---bandit31@bandit:/tmp/tmp.XKEqwF7udh/repo$ cat README.md
+   This time your task is to push a file to the remote repository.
+
+   Details:
+       File name: key.txt
+       Content: 'May I come in?'
+       Branch: master
+
+rm .gitignore
+ echo "May I come in?" >key.txt
+cat key.txt
+git add -f key.txt
+ls -a
+rm .gitignore
+git add key.txt
+git status
+git commit -m "hi"
+git log
+
+git push
+git remote -v
+git remote set-url origin ssh://bandit31-git@localhost:2220/home/bandit31-git/repo
+GIT_SSH_COMMAND="ssh -p 2220 -i /tmp/tmp.jC0sEkrMYs/repo/my_key" git push origin master
+
+3O9RfhqyAlVBEZpVb6LYStshZoqoSx5K
+
+==========================================32======================================
+$shell
+$0
+export SHELL=/bin/bash
+echo $SHELL
+/bin/bash
+$SHELL
+==========================================33======================================
+cat /etc/bandit_pass/bandit33
+pw--tQdtbs5D5i2vJwkO8mEyYEyTL8izoeJ0
+
+===========================================END WARGAMES=========================================
+
+
+-----------------------------------------------------------------------------------
+docker ps
+docker exec -it Copy ubuntu link /bin/bash
+login preece
+---------------------------------------------------------------
+./start.sh (twice times) then enter password
+
+
+
+
+***************************git and git hub tutorial**************************************
+
+
+
+
+
+
+
+
+
