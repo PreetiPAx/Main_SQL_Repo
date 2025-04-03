@@ -168,11 +168,26 @@ ORDER BY e.emp_id ASC,
 
 #=================================5th answer========================================
 
+# Method :1
 SELECT *
 FROM employees e ,
      salary_grades s
 WHERE e.salary BETWEEN s.min_sal AND s.max_sal
 AND s.grade IN  (2, 3);
+
+# Method :2
+# SELECT *
+# FROM employees e,
+#      salary_grades s
+# WHERE e.salary BETWEEN (1300-2100)
+# AND s.grade IN (2, 3);
+
+
+
+
+
+
+
 
 
 
